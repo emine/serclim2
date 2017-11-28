@@ -9,5 +9,5 @@
     </author>
     <content src="index.html" />
     <access origin="*" />
-	<gap:plugin name="com.millerjames01.sqlite-plugin" />
+    <gap:plugin name="cordova-sqlite-storage" />
 </widget>

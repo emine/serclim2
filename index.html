@@ -45,8 +45,9 @@
 		function onDeviceReady() {
 			// use SqlLite Plugin
 			//ej.db = window.sqlitePlugin.openDatabase('serclim', '1.0', 'Serclim mobile DB', -1);
-			ej.db =   window.sqlitePlugin.openDatabase({name: "serclim"});
-			ej.global.allowed_role = '10' ; // techniciens only on tablet
+		//	ej.db =   window.sqlitePlugin.openDatabase({name: "serclim"});
+            ej.db = window.sqlitePlugin.openDatabase({name: "serclim", androidDatabaseImplementation: 2});
+            ej.global.allowed_role = '10' ; // techniciens only on tablet
 			ej.global.userAgent = "mobile" ;
 			$( ":mobile-pagecontainer" ).pagecontainer( "change", "#page-home");
 		}
