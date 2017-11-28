@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="serclim2.fr" version="1.1" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Serclim2</name>
+    <description>
+        Gestion des Interventions Serclim
+    </description>
+    <author email="emile@ejerome.net" href="https://centrale.serclim.fr">
+        Emile Jerome
+    </author>
+    <content src="index.html" />
+    <access origin="*" />
+	<gap:plugin name="org.apache.cordova.camera" />
+	<gap:plugin name="com.millerjames01.sqlite-plugin" />
+</widget>
