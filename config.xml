@@ -9,6 +9,5 @@
     </author>
     <content src="index.html" />
     <access origin="*" />
-	<gap:plugin name="org.apache.cordova.camera" />
 	<gap:plugin name="com.millerjames01.sqlite-plugin" />
 </widget>
