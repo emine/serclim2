@@ -9,5 +9,5 @@
     </author>
     <content src="index.html" />
     <access origin="*" />
-    <gap:plugin name="cordova-sqlite-storage" />
+    <plugin spec="https://github.com/litehelpers/Cordova-sqlite-evcore-extbuild-free" source="git" />
 </widget>
