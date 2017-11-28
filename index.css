@@ -1,0 +1,54 @@
+
+.ej-alter {
+	color: #3388CC ;
+}	
+
+	
+#page-interventions .ej-statut,
+#page-intervention .ej-statut
+ {
+	color: red ;
+	font-weight: bold;
+	margin-left: 100px
+}	
+
+
+#ej-canvas {
+	border: 1px solid #3388CC ;
+	width: 100% ;
+	height: 500px;
+	margin: 10px ;
+}
+	 	
+#page-intervention h4 {
+	text-align: center;
+}	
+
+#page-intervention #btn-effacer {
+	float: right;
+}	
+
+#page-intervention #panel-questionnaire div.ui-bar-a {
+	height: 50px;
+}	
+
+#page-intervention #panel-questionnaire div.ui-bar-a span {
+	vertical-align: middle ;
+	height: 50px ;
+}	
+
+#page-intervention #panel-questionnaire div.ui-block-a, #page-intervention #panel-questionnaire div.ui-block-b {
+	width:50% ;
+}	
+
+#page-intervention #total-devis {
+	float: right ;
+	display: inline-block ;
+	font-weight: bold;
+	color: #3388CC ;
+	padding: 15px ;
+}		
+
+#page-home .ui-btn {
+	margin-top : 30px !important ;
+}	

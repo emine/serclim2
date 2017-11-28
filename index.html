@@ -1,0 +1,206 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+	<title>Interventions Serclim</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 
+	<link rel="stylesheet" href="jquery.mobile/jquery.mobile-1.4.3.css" />
+	<script src="jquery-1.8.3.js"></script>
+	<script src="jquery.mobile/jquery.mobile-1.4.3.js"></script>
+	
+	<!-- jquery ui autocomplete -->
+	<link rel="STYLESHEET" type="text/css" href="jquery-ui/redmond/jquery-ui.css">
+	<link rel="STYLESHEET" type="text/css" href="jquery-ui/redmond/jquery.ui.theme.css">
+	
+	<script type="text/javascript" src="jquery-ui/jquery.ui.core.js"></script> 
+	<script type="text/javascript" src="jquery-ui/jquery.ui.widget.js"></script> 
+	<script type="text/javascript" src="jquery-ui/jquery.ui.position.js"></script> 
+	<script type="text/javascript" src="jquery-ui/jquery.ui.menu.js"></script> 
+	<script type="text/javascript" src="jquery-ui/jquery.ui.autocomplete.js"></script> 
+	
+	<link rel="stylesheet" href="index.css" />
+	
+	<script type="text/javascript" src="cordova.js"></script> 
+<!--	<script type="text/javascript" src="cordova_plugins.js"></script> -->
+
+	<script src="async.js"></script>
+
+	
+	<script src="scripts/config.js"></script>
+	<script src="scripts/sync.js"></script>
+	<script src="scripts/login.js"></script>
+	<script src="scripts/interventions.js"></script>
+	<script src="scripts/intervention.js"></script>
+	<script src="scripts/home.js"></script>
+
+
+<script type="text/javascript">	
+	ej.db = null ;
+	ej.global = {} ; 
+	ej.global.SYNC_ON_GOING = false ;
+	if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/)) {
+		// Wait for Cordova to load
+		document.addEventListener("deviceready", onDeviceReady, false);
+		// Cordova is ready
+		function onDeviceReady() {
+			// use SqlLite Plugin
+			//ej.db = window.sqlitePlugin.openDatabase('serclim', '1.0', 'Serclim mobile DB', -1);
+			ej.db =   window.sqlitePlugin.openDatabase({name: "serclim"});
+			ej.global.allowed_role = '10' ; // techniciens only on tablet
+			ej.global.userAgent = "mobile" ;
+			$( ":mobile-pagecontainer" ).pagecontainer( "change", "#page-home");
+		}
+		// resume event : SURTOUT PAS: BUG !!!! L'INFORMATION SAISIE AVANT LA VEILLE EST PERDUE
+		// 
+		c
+	} else {
+		// browser: use webdb
+		ej.db = openDatabase('serclim', '1.0', 'Serclim mobile DB', 2 * 1024 * 1024);
+		ej.global.allowed_role = '12' ; // supervisors only on browser
+		ej.global.userAgent = "browser" ;
+	}
+</script>
+
+
+</head> 
+
+<body>
+
+
+
+<!-----------------------------------  home page ------------------------------------->
+
+<div data-role="page" id="page-home">
+	<div data-role="header" data-icon="audio">
+		<h3>Bonjour <span id="utilisateur"></span> <span id="indic-online" class="ui-icon-audio ui-btn-icon-right" /></h3>
+		<small><span class="ej-alter" style="float:right">Version 1.3 &nbsp;</small></h3>
+	</div>
+
+	<div role="main" class="ui-content">	
+	<!--	<button id="interventions"   class="ui-btn ui-icon-carat-r ui-btn-icon-right ui-shadow">Liste des interventions à effectuer</button> -->
+		<a href="#page-interventions" class="ui-btn ui-icon-carat-r ui-btn-icon-right ui-shadow">
+					Liste des interventions (<span id="cnt-interventions"></span>) </a>
+		<button id="synchronize" class="ui-btn ui-icon-refresh ui-btn-icon-right ui-shadow">
+					Synchroniser les interventions</button>
+		<button id="reload" class="ui-btn ui-icon-arrow-d ui-btn-icon-right ui-shadow">
+					Rechargement du stock (<span id="cnt-stock-materiel"></span>)</button>
+		<button id="logout" class="ui-btn ui-icon-delete ui-btn-icon-right ui-shadow">
+					Déconnexion</button>
+		<!--
+		<button id="btn-zap" class="ui-btn ui-shadow">
+					Réinitialisation</button>
+		-->
+		<button id="btn-test" class="ui-btn ui-shadow">
+					Test connexion</button>
+		
+	</div>
+</div>
+
+
+
+
+<!----------------------------------- login page ------------------------------------->
+
+<div data-role="page" id="page-login">
+	<div data-role="header">
+		<h3>Identification</h3>
+		<small><span class="ej-alter" style="float:right">Version 1.3 &nbsp;</small></h3>
+	</div>
+
+	<div role="main" class="ui-content">	
+		<form id="form-login">
+			<label for="email">Identifiant</label>
+			<input type="text" name="email" id="login-email" />
+			<label for="mdp">Mot de passe</label>
+			<input type="password" name="mdp" id="login-mdp" />
+		</form>
+		<a href="#" class="ui-btn ui-btn-inline ui-corner-all ui-shadow ui-btn-active" id="btn-login">Authentification</a>
+
+	</div>
+</div>
+
+
+
+
+<!----------------------------------- liste des interventions ------------------------------------->
+
+<div data-role="page" id="page-interventions">
+	<div data-role="header">
+			<h3>Liste des interventions</h3>
+			<a href="#page-home" class="ui-btn ui-btn-inline ui-corner-all ui-shadow ui-btn-active">Retour</a>
+	</div><!-- /header -->
+		
+	<div role="main" class="ui-content">	
+		<input id="search" placeholder="recherche">
+		<ul data-role="listview" data-inset="true" id="list-interventions"></ul>	
+	</div>
+</div>
+
+
+
+
+
+<!----------------------------------- page d'une intervention ------------------------------------------------->
+
+<div data-role="page" id="page-intervention">
+	<div data-role="header">
+		<h3>Intervention</h3>
+		<button id="btn-end" class="ui-btn ui-btn-inline ui-corner-all ui-shadow ui-btn-active">Terminer l'intervention</button>
+		<button id="btn-cancel" class="ui-btn ui-btn-inline ui-corner-all ui-shadow">Mettre en pause</button>
+	</div><!-- /header -->
+		
+	<div role="main" class="ui-content">	
+		
+		<div id="panel-client"></div>
+		<br>
+		<div data-role="navbar">
+			<ul>
+				<li><a id="btn-questionnaire" class="ui-btn-active">Questionnaire</a></li>
+				<li><a id="btn-materiel">Materiel</a></li>
+				<li><a id="btn-devis">P3 / Devis </a></li>
+				<li><a id="btn-observation">Observations</a></li>
+				<li><a id="btn-signature">Signature</a></li>
+			</ul>
+		</div><!-- /navbar -->
+		
+		<div id="panel-questionnaire"></div>
+		
+		<div id="panel-materiel"></div>
+		
+		<div id="panel-devis">
+			<select name="is_P3" id="is_P3" data-role="slider">
+				<option value="1">P3</option>
+				<option value="0">Devis</option>
+			</select> 
+			<div id="total-devis"></div>
+			<form>
+				<label for="designation">Designation article</label>
+				<input type="text" name="designation" id="designation">
+			</form>
+			
+			<!-- ui-grid-c is 4 columns --> 
+			<div id="grid-devis" class="ui-grid-c"></div>
+		 
+
+		</div>	
+
+		<div id="panel-observation">
+			<input type="checkbox" name= "followUp" id="followUp">
+			<label for="followUp">A poursuivre, nécessite une autre intervention</label> 
+
+			<label for="observation">Observations</label>
+			<textarea rows="10" name="observation" id="observation"></textarea> 
+		</div>
+	
+		<div id="panel-signature">
+			<h4>Signature du client ou de son représentant</h4>
+			<button id="btn-effacer" class="ui-btn ui-btn-inline ui-corner-all ui-shadow ui-mini">Effacer</button>
+			<canvas id="ej-canvas"></canvas>
+		</div>
+		
+</div>
+
+
+</body>
+
+</html>
